@@ -1,8 +1,8 @@
 // @ts-nocheck
 import { useMutation } from 'react-query';
-import useApiRequest from '../useRequest';
 import { setCookie } from '../../utils';
 import { useRequestQuery } from '../useQueryRequest';
+import useApiRequest from '../useRequest';
 import t from './types';
 
 /**
@@ -33,6 +33,56 @@ export const useAuthLogin = (props) => {
       // Reboot the application.
       window.location.reload();
     },
+    ...props,
+  });
+};
+
+/**
+ * Authentication OIDC authorize
+ */
+
+export const useAuthOidcAuthorize = (props) => {
+  const apiRequest = useApiRequest();
+
+  return useMutation((values) => apiRequest.post('oidc/authorize', values), {
+    select: (res) => res.data,
+    onSuccess: (data) => {
+      window.location.href = data.data.authorization_url;
+    },
+    ...props,
+  });
+};
+
+/**
+ * Authentication OIDC login
+ */
+
+export const useAuthOidcLogin = (props) => {
+  const apiRequest = useApiRequest();
+
+  return useMutation((values) => apiRequest.post('oidc/login', values), {
+    select: (res) => res.data,
+    onSuccess: (data) => {
+      // Set authentication cookies.
+      setAuthLoginCookies(data.data);
+
+      // Reboot the application.
+      window.location.reload();
+    },
+    ...props,
+  });
+};
+
+/**
+ * Authentication OIDC logout
+ */
+
+export const useAuthOidcLogout = (props) => {
+  const apiRequest = useApiRequest();
+
+  return useMutation((values) => apiRequest.post('oidc/logout', values), {
+    select: (res) => res.data,
+    onSuccess: (data) => {},
     ...props,
   });
 };
@@ -78,7 +128,7 @@ export const useAuthResetPassword = (props) => {
  */
 export const useAuthMetadata = (props) => {
   return useRequestQuery(
-    [t.AUTH_METADATA_PAGE,],
+    [t.AUTH_METADATA_PAGE],
     {
       method: 'get',
       url: `auth/meta`,
@@ -88,5 +138,5 @@ export const useAuthMetadata = (props) => {
       defaultData: {},
       ...props,
     },
-  ); 
-}
+  );
+};

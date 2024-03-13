@@ -236,6 +236,9 @@ importers:
       objection-unique:
         specifier: ^1.2.2
         version: 1.2.2(objection@3.0.1)
+      openid-client:
+        specifier: ^5.6.5
+        version: 5.6.5
       pluralize:
         specifier: ^8.0.0
         version: 8.0.0
@@ -1692,20 +1695,20 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@ampproject/remapping': 2.2.0
-      '@babel/code-frame': 7.18.6
+      '@babel/code-frame': 7.22.13
       '@babel/generator': 7.20.14
-      '@babel/helper-compilation-targets': 7.20.7(@babel/core@7.20.12)
-      '@babel/helper-module-transforms': 7.20.11
+      '@babel/helper-compilation-targets': 7.22.15
+      '@babel/helper-module-transforms': 7.23.0(@babel/core@7.20.12)
       '@babel/helpers': 7.20.13
-      '@babel/parser': 7.20.15
-      '@babel/template': 7.20.7
-      '@babel/traverse': 7.20.13(supports-color@5.5.0)
-      '@babel/types': 7.20.7
+      '@babel/parser': 7.23.0
+      '@babel/template': 7.22.15
+      '@babel/traverse': 7.20.13
+      '@babel/types': 7.23.0
       convert-source-map: 1.9.0
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       gensync: 1.0.0-beta.2
       json5: 2.2.3
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -2103,9 +2106,9 @@ packages:
     resolution: {integrity: sha512-nzJ0DWCL3gB5RCXbUO3KIMMsBY2Eqbx8mBpKGE/02PgyRQFcPQLbkQ1vyy596mZLaP+dAfD+R4ckASzNVmW3jg==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/template': 7.20.7
-      '@babel/traverse': 7.20.13(supports-color@5.5.0)
-      '@babel/types': 7.20.7
+      '@babel/template': 7.22.15
+      '@babel/traverse': 7.20.13
+      '@babel/types': 7.23.0
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -3223,6 +3226,23 @@ packages:
       '@babel/types': 7.23.0
     dev: false
 
+  /@babel/traverse@7.20.13:
+    resolution: {integrity: sha512-kMJXfF0T6DIS9E8cgdLCSAL+cuCK+YEZHWiLK0SXpTo8YRj5lpJu3CDNKiIBCne4m9hhTIqUg6SYTAI39tAiVQ==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      '@babel/code-frame': 7.18.6
+      '@babel/generator': 7.20.14
+      '@babel/helper-environment-visitor': 7.18.9
+      '@babel/helper-function-name': 7.19.0
+      '@babel/helper-hoist-variables': 7.18.6
+      '@babel/helper-split-export-declaration': 7.18.6
+      '@babel/parser': 7.20.15
+      '@babel/types': 7.20.7
+      debug: 4.3.4
+      globals: 11.12.0
+    transitivePeerDependencies:
+      - supports-color
+
   /@babel/traverse@7.20.13(supports-color@5.5.0):
     resolution: {integrity: sha512-kMJXfF0T6DIS9E8cgdLCSAL+cuCK+YEZHWiLK0SXpTo8YRj5lpJu3CDNKiIBCne4m9hhTIqUg6SYTAI39tAiVQ==}
     engines: {node: '>=6.9.0'}
@@ -3239,6 +3259,7 @@ packages:
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
+    dev: false
 
   /@babel/types@7.20.7:
     resolution: {integrity: sha512-69OnhBxSSgK0OzTJai4kyPDiKTIe3j+ctaHdIGVbRahTLAT7L3R9oeXHC2aVSuGYt3cVnoAMDmOCgJ2yaiLMvg==}
@@ -3962,7 +3983,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       ajv: 6.12.6
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       espree: 9.4.1
       globals: 13.20.0
       ignore: 5.2.4
@@ -4011,7 +4032,7 @@ packages:
     engines: {node: '>=10.10.0'}
     dependencies:
       '@humanwhocodes/object-schema': 1.2.1
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -6528,7 +6549,7 @@ packages:
   /@types/keyv@3.1.4:
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
     dependencies:
-      '@types/node': 18.13.0
+      '@types/node': 14.18.36
     dev: false
 
   /@types/knex@0.16.1(mysql2@1.7.0)(mysql@2.18.1):
@@ -6708,7 +6729,7 @@ packages:
   /@types/responselike@1.0.1:
     resolution: {integrity: sha512-TiGnitEDxj2X0j+98Eqk5lv/Cij8oHd32bU4D/Yw6AOq7vvTk0gSD2GPj0G/HkvhMoVsdlhYF4yqqlyPBTM6Sg==}
     dependencies:
-      '@types/node': 18.13.0
+      '@types/node': 14.18.36
     dev: false
 
   /@types/retry@0.12.0:
@@ -6903,7 +6924,7 @@ packages:
       '@typescript-eslint/scope-manager': 5.51.0
       '@typescript-eslint/type-utils': 5.51.0(eslint@8.33.0)(typescript@3.9.10)
       '@typescript-eslint/utils': 5.51.0(eslint@8.33.0)(typescript@3.9.10)
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       eslint: 8.33.0
       grapheme-splitter: 1.0.4
       ignore: 5.2.4
@@ -7006,7 +7027,7 @@ packages:
       '@typescript-eslint/scope-manager': 5.51.0
       '@typescript-eslint/types': 5.51.0
       '@typescript-eslint/typescript-estree': 5.51.0(typescript@3.9.10)
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       eslint: 8.33.0
       typescript: 3.9.10
     transitivePeerDependencies:
@@ -7060,7 +7081,7 @@ packages:
     dependencies:
       '@typescript-eslint/typescript-estree': 5.51.0(typescript@3.9.10)
       '@typescript-eslint/utils': 5.51.0(eslint@8.33.0)(typescript@3.9.10)
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       eslint: 8.33.0
       tsutils: 3.21.0(typescript@3.9.10)
       typescript: 3.9.10
@@ -7129,7 +7150,7 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.51.0
       '@typescript-eslint/visitor-keys': 5.51.0
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       globby: 11.1.0
       is-glob: 4.0.3
       semver: 7.3.8
@@ -7562,7 +7583,7 @@ packages:
     dependencies:
       cron-parser: 3.5.0
       date.js: 0.3.3
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       human-interval: 2.0.1
       moment-timezone: 0.5.43
       mongodb: 4.13.0
@@ -7598,7 +7619,7 @@ packages:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
     engines: {node: '>= 6.0.0'}
     dependencies:
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
 
@@ -10616,6 +10637,17 @@ packages:
       ms: 2.1.2
     dev: false
 
+  /debug@4.3.4:
+    resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+    dependencies:
+      ms: 2.1.2
+
   /debug@4.3.4(supports-color@5.5.0):
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
     engines: {node: '>=6.0'}
@@ -11649,7 +11681,7 @@ packages:
       eslint: '*'
       eslint-plugin-import: '*'
     dependencies:
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       enhanced-resolve: 5.12.0
       eslint: 8.33.0
       eslint-plugin-import: 2.27.5(@typescript-eslint/parser@5.51.0)(eslint-import-resolver-typescript@3.5.3)(eslint-import-resolver-webpack@0.11.1)(eslint@8.33.0)
@@ -12006,7 +12038,7 @@ packages:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       doctrine: 3.0.0
       escape-string-regexp: 4.0.0
       eslint-scope: 7.1.1
@@ -12348,7 +12380,7 @@ packages:
     engines: {node: '>= 10.17.0'}
     hasBin: true
     dependencies:
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       get-stream: 5.2.0
       yauzl: 2.10.0
     optionalDependencies:
@@ -14018,7 +14050,7 @@ packages:
     engines: {node: '>= 6'}
     dependencies:
       agent-base: 6.0.2
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -14062,7 +14094,7 @@ packages:
     resolution: {integrity: sha512-GZnXWeA15jTi9gc1jfgrJcSrNYDg7qbJXSYMuibqPYb1ThORmGCeM+gL6LrDagYRHh87/q/D0jRSOhAfv6wAow==}
     engines: {node: '>=0.10.0'}
     dependencies:
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       make-plural: 7.2.0
       math-interval-parser: 2.0.1
       messageformat: 2.3.0
@@ -14906,7 +14938,7 @@ packages:
       '@babel/generator': 7.20.14
       '@babel/parser': 7.20.15
       '@babel/template': 7.20.7
-      '@babel/traverse': 7.20.13(supports-color@5.5.0)
+      '@babel/traverse': 7.20.13
       '@babel/types': 7.20.7
       istanbul-lib-coverage: 2.0.5
       semver: 6.3.0
@@ -14947,7 +14979,7 @@ packages:
     resolution: {integrity: sha512-R47KzMtDJH6X4/YW9XTx+jrLnZnscW4VpNN+1PViSYTejLVPWv7oov+Duf8YQSPyVRUvueQqz1TcsC6mooZTXw==}
     engines: {node: '>=6'}
     dependencies:
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       istanbul-lib-coverage: 2.0.5
       make-dir: 2.1.0
       rimraf: 2.7.1
@@ -16005,6 +16037,10 @@ packages:
     hasBin: true
     dev: false
 
+  /jose@4.15.5:
+    resolution: {integrity: sha512-jc7BFxgKPKi94uOvEmzlSWFFe2+vASyXaKUpdQKatWAESU2MWjDfFf0fdfc83CDKcA5QecabZeNLyfhe3yKNkg==}
+    dev: false
+
   /js-cookie@2.2.1:
     resolution: {integrity: sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==}
     dev: false
@@ -16457,7 +16493,7 @@ packages:
     dependencies:
       colorette: 2.0.19
       commander: 9.5.0
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       escalade: 3.1.1
       esm: 3.2.25
       get-package-type: 0.1.0
@@ -18473,7 +18509,7 @@ packages:
     peerDependencies:
       objection: ^2.1.2
     dependencies:
-      debug: 4.3.4(supports-color@5.5.0)
+      debug: 4.3.4
       lodash: 4.17.21
       objection: 3.0.1(knex@0.95.15)
     transitivePeerDependencies:
@@ -18517,6 +18553,11 @@ packages:
 
   /obuf@1.1.2:
     resolution: {integrity: sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==}
+    dev: false
+
+  /oidc-token-hash@5.0.3:
+    resolution: {integrity: sha512-IF4PcGgzAr6XXSff26Sk/+P4KZFJVuHAJZj3wgO3vX2bMdNVp/QXTP3P7CEm9V1IdG8lDLY3HhiqpsE/nOwpPw==}
+    engines: {node: ^10.13.0 || >=12.0.0}
     dev: false
 
   /on-finished@2.4.1:
@@ -18563,6 +18604,15 @@ packages:
       define-lazy-prop: 2.0.0
       is-docker: 2.2.1
       is-wsl: 2.2.0
+
+  /openid-client@5.6.5:
+    resolution: {integrity: sha512-5P4qO9nGJzB5PI0LFlhj4Dzg3m4odt0qsJTfyEtZyOlkgpILwEioOhVVJOrS1iVH494S4Ee5OCjjg6Bf5WOj3w==}
+    dependencies:
+      jose: 4.15.5
+      lru-cache: 6.0.0
+      object-hash: 2.2.0
+      oidc-token-hash: 5.0.3
+    dev: false
 
   /optional-require@1.0.3:
     resolution: {integrity: sha512-RV2Zp2MY2aeYK5G+B/Sps8lW5NHAzE5QClbFP15j+PWmP+T9PxlJXBOOLoSAdgwFvS4t0aMR4vpedMkbHfh0nA==}
@@ -24536,6 +24586,7 @@ packages:
   /uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
+    requiresBuild: true
 
   /v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}

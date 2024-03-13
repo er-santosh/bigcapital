@@ -1,8 +1,6 @@
 // @ts-nocheck
-import React from 'react';
+import { Button, Spinner } from '@blueprintjs/core';
 import styled from 'styled-components';
-import { Spinner } from '@blueprintjs/core';
-import { Button } from '@blueprintjs/core';
 
 export function AuthenticationLoadingOverlay() {
   return (
@@ -64,6 +62,19 @@ export const AuthFooterLink = styled.p`
 `;
 
 export const AuthSubmitButton = styled(Button)`
+  margin-top: 20px;
+
+  &.bp4-intent-primary {
+    background-color: #0052cc;
+
+    &:disabled,
+    &.bp4-disabled {
+      background-color: rgba(0, 82, 204, 0.4);
+    }
+  }
+`;
+
+export const AuthOidcSignInButton = styled(Button)`
   margin-top: 20px;
 
   &.bp4-intent-primary {
