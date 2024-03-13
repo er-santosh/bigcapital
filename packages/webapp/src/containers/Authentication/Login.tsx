@@ -19,6 +19,7 @@ import {
   AuthFooterLinks,
   AuthInsiderCard,
   AuthOidcSignInButton,
+  AuthenticationLoadingOverlay,
 } from './_components';
 import { LoginSchema, transformLoginErrorsToToasts } from './utils';
 
@@ -37,7 +38,7 @@ export default function Login() {
   const codeParam = query.get('code');
 
   const [oidcCode, setOidcCode] = useState<null | string>(null);
-
+  const [authorizing, setAuthorizing] = useState(false);
   const { mutateAsync: loginMutate } = useAuthLogin();
   const { isLoading: oidcAuthorizing, mutateAsync: OidcAuthorizeMutate } =
     useAuthOidcAuthorize();
@@ -63,14 +64,19 @@ export default function Login() {
   };
 
   const handleOidcAuthorize = () => {
-    OidcAuthorizeMutate({}).catch((error) => {});
+    setAuthorizing(true);
+    OidcAuthorizeMutate({}).catch((error) => {
+      setAuthorizing(false);
+    });
   };
 
   const handleOidcLogin = async (code: string) => {
+    setAuthorizing(true);
     OIdcLoginMutate({
       code,
     }).catch((error) => {
       setOidcCode(null);
+      setAuthorizing(false);
     });
   };
 
@@ -99,6 +105,8 @@ export default function Login() {
         >
           <T id={'oidc_log_in'} />
         </AuthOidcSignInButton>
+
+        {authorizing && <AuthenticationLoadingOverlay />}
       </AuthInsiderCard>
 
       <LoginFooterLinks />

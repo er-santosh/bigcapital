@@ -1,9 +1,10 @@
 import BaseController from '@/api/controllers/BaseController';
-import { oidcClient } from '@/lib/Oidc/OidcClient';
+import AttachCurrentTenantUser from '@/api/middleware/AttachCurrentTenantUser';
+import TenancyMiddleware from '@/api/middleware/TenancyMiddleware';
+import JWTAuth from '@/api/middleware/jwtAuth';
 import { OidcService } from '@/services/Oidc';
 import { NextFunction, Request, Response, Router } from 'express';
 import { Inject, Service } from 'typedi';
-
 @Service()
 export default class OidcController extends BaseController {
   @Inject()
@@ -19,6 +20,11 @@ export default class OidcController extends BaseController {
 
     router.post('/login', this.oidcLogin);
 
+    router.use(JWTAuth);
+    router.use(AttachCurrentTenantUser);
+    router.use(TenancyMiddleware);
+
+    router.post('/userinfo', this.oidcUserInfo);
     router.post('/logout', this.oidcLogout);
 
     return router;
@@ -58,17 +64,31 @@ export default class OidcController extends BaseController {
     try {
       const code = req.body.code;
 
-      const tokenSet = await this.oidcService.grantAccessTokenByCode(code);
+      const loginResponse = await this.oidcService.loginUser(code);
 
-      const userInfo = await this.oidcService.getUserInfoByTokenSet(tokenSet);
+      return res.status(200).send(loginResponse);
+    } catch (error) {
+      next(error);
+    }
+  };
 
-      console.log({ userInfo });
+  /**
+   * Authentication oidc userinfo.
+   * @param {Request} req -
+   * @param {Response} res -
+   * @param {NextFunction} next -
+   */
+  private oidcUserInfo = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const { token } = req;
 
-      return res.status(200).send({
-        token: tokenSet.access_token,
-        user: '',
-        tenant: '',
-      });
+      const userInfo = await this.oidcService.getUserInfoByAccessToken(token);
+
+      return res.status(200).send(userInfo);
     } catch (error) {
       next(error);
     }
@@ -80,17 +100,13 @@ export default class OidcController extends BaseController {
    * @param {Response} res -
    * @param {NextFunction} next -
    */
-  private oidcLogout = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
+  private oidcLogout = (req: Request, res: Response, next: NextFunction) => {
     try {
-      const loggedOut = oidcClient.endSessionUrl();
+      const { token } = req;
 
-      console.log({ loggedOut });
+      const logoutUrl = this.oidcService.generateEndSessionUrl(token);
 
-      return res.status(200).send({});
+      return res.status(200).send({ logoutUrl });
     } catch (error) {
       next(error);
     }
