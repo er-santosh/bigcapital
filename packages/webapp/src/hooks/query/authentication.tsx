@@ -64,10 +64,9 @@ export const useAuthOidcLogin = (props) => {
     select: (res) => res.data,
     onSuccess: (data) => {
       // Set authentication cookies.
-      setAuthLoginCookies(data.data);
-
+      // setAuthLoginCookies(data.data);
       // Reboot the application.
-      window.location.reload();
+      // window.location.reload();
     },
     ...props,
   });

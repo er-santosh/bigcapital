@@ -1,14 +1,14 @@
 import BaseController from '@/api/controllers/BaseController';
-import {
-  authorizationUrlParameters,
-  tokenGrantBody,
-} from '@/config/oidcConfig';
 import { oidcClient } from '@/lib/Oidc/OidcClient';
+import { OidcService } from '@/services/Oidc';
 import { NextFunction, Request, Response, Router } from 'express';
-import { Service } from 'typedi';
+import { Inject, Service } from 'typedi';
 
 @Service()
 export default class OidcController extends BaseController {
+  @Inject()
+  private oidcService: OidcService;
+
   /**
    * Router constructor method.
    */
@@ -36,9 +36,7 @@ export default class OidcController extends BaseController {
     next: NextFunction
   ) => {
     try {
-      const authorizationUrl = oidcClient.authorizationUrl(
-        authorizationUrlParameters
-      );
+      const authorizationUrl = this.oidcService.generateAuthorizationUrl();
 
       res.json({ authorizationUrl });
     } catch (error) {
@@ -60,12 +58,11 @@ export default class OidcController extends BaseController {
     try {
       const code = req.body.code;
 
-      const grantParameters = {
-        ...tokenGrantBody,
-        code,
-      };
+      const tokenSet = await this.oidcService.grantAccessTokenByCode(code);
 
-      const tokenSet = await oidcClient.grant(grantParameters);
+      const userInfo = await this.oidcService.getUserInfoByTokenSet(tokenSet);
+
+      console.log({ userInfo });
 
       return res.status(200).send({
         token: tokenSet.access_token,
