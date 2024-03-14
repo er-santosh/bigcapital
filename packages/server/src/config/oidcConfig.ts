@@ -15,6 +15,7 @@ export const oidcConfig = {
   OIDC_ENDSESSION_ENDPOINT: process.env.OIDC_ENDSESSION_ENDPOINT,
   OIDC_REDIRECT_URI: process.env.OIDC_REDIRECT_URI,
   OIDC_SCOPE: process.env.OIDC_SCOPE,
+  OIDC_JWK_URI: process.env.OIDC_JWK_URI,
 };
 
 export const issuerMetadata: IssuerMetadata = {
@@ -23,6 +24,7 @@ export const issuerMetadata: IssuerMetadata = {
   token_endpoint: oidcConfig.OIDC_TOKEN_ENDPOINT,
   userinfo_endpoint: oidcConfig.OIDC_USERINFO_ENDPOINT,
   end_session_endpoint: oidcConfig.OIDC_ENDSESSION_ENDPOINT,
+  jwks_uri: oidcConfig.OIDC_JWK_URI,
 };
 
 export const clientMetadata: ClientMetadata = {

@@ -1,3 +1,4 @@
+import config from '@/config';
 import {
   authorizationUrlParameters,
   tokenGrantBody,
@@ -11,7 +12,6 @@ import { cloneDeep } from 'lodash';
 import moment from 'moment';
 import { TokenSet, UnknownObject, UserinfoResponse } from 'openid-client';
 import { Inject } from 'typedi';
-
 interface IOidcLoginResponse {
   token: string;
   user: ISystemUser;
@@ -72,6 +72,8 @@ export class OidcService {
    * @return {Promise<IOidcLoginResponse>}
    */
   public async loginUser(code: string): Promise<IOidcLoginResponse> {
+    if (config.oidcLogin.disabled) throw new Error('Oidc login disabled');
+
     const tokenSet = await this.grantAccessTokenByCode(code);
 
     const accessToken = tokenSet.access_token;

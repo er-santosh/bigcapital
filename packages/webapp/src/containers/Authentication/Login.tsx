@@ -4,24 +4,16 @@ import { Link } from 'react-router-dom';
 
 import { FormattedMessage as T, AppToaster as Toaster } from '@/components';
 import AuthInsider from '@/containers/Authentication/AuthInsider';
-import {
-  useAuthLogin,
-  useAuthOidcAuthorize,
-  useAuthOidcLogin,
-} from '@/hooks/query';
+import { useAuthLogin } from '@/hooks/query';
 
+import OidcSignin from '@/containers/Authentication/OidcSignin';
 import useQueryParams from '@/hooks/useQueryParams';
-import { useEffect, useState } from 'react';
 import { useAuthMetaBoot } from './AuthMetaBoot';
 import LoginForm from './LoginForm';
 import {
   AuthFooterLink,
   AuthFooterLinks,
   AuthInsiderCard,
-  AuthOidcSignInButton,
-  AuthOrDivider,
-  AuthOrDividerContainer,
-  AuthenticationLoadingOverlay,
 } from './_components';
 import { LoginSchema, transformLoginErrorsToToasts } from './utils';
 
@@ -39,12 +31,8 @@ export default function Login() {
 
   const codeParam = query.get('code');
 
-  const [oidcCode, setOidcCode] = useState<null | string>(null);
-  const [authorizing, setAuthorizing] = useState(false);
   const { mutateAsync: loginMutate } = useAuthLogin();
-  const { isLoading: oidcAuthorizing, mutateAsync: OidcAuthorizeMutate } =
-    useAuthOidcAuthorize();
-  const { mutateAsync: OIdcLoginMutate } = useAuthOidcLogin();
+
   const handleSubmit = (values, { setSubmitting }) => {
     loginMutate({
       crediential: values.crediential,
@@ -65,30 +53,6 @@ export default function Login() {
     );
   };
 
-  const handleOidcAuthorize = () => {
-    setAuthorizing(true);
-    OidcAuthorizeMutate({}).catch((error) => {
-      setAuthorizing(false);
-    });
-  };
-
-  const handleOidcLogin = async (code: string) => {
-    setAuthorizing(true);
-    OIdcLoginMutate({
-      code,
-    }).catch((error) => {
-      setOidcCode(null);
-      setAuthorizing(false);
-    });
-  };
-
-  useEffect(() => {
-    if (codeParam && !oidcCode) {
-      setOidcCode(codeParam.toString());
-      handleOidcLogin(codeParam.toString());
-    }
-  }, [codeParam]);
-
   return (
     <AuthInsider>
       <AuthInsiderCard>
@@ -98,20 +62,8 @@ export default function Login() {
           onSubmit={handleSubmit}
           component={LoginForm}
         />
-        <AuthOrDividerContainer>
-          <AuthOrDivider>OR</AuthOrDivider>
-        </AuthOrDividerContainer>
-        <AuthOidcSignInButton
-          onClick={handleOidcAuthorize}
-          type={'button'}
-          fill
-          large
-          loading={oidcAuthorizing}
-        >
-          <T id={'oidc_log_in'} />
-        </AuthOidcSignInButton>
 
-        {authorizing && <AuthenticationLoadingOverlay />}
+        <OidcSignin code={codeParam} />
       </AuthInsiderCard>
 
       <LoginFooterLinks />
@@ -126,7 +78,10 @@ function LoginFooterLinks() {
     <AuthFooterLinks>
       {!signupDisabled && (
         <AuthFooterLink>
-          <T id={'dont_have_an_account'} /> <Link to={'/auth/register'}><T id={'sign_up'} /></Link>
+          <T id={'dont_have_an_account'} />{' '}
+          <Link to={'/auth/register'}>
+            <T id={'sign_up'} />
+          </Link>
         </AuthFooterLink>
       )}
       <AuthFooterLink>

@@ -1,6 +1,6 @@
-import { Service } from 'typedi';
-import { IAuthGetMetaPOJO } from '@/interfaces';
 import config from '@/config';
+import { IAuthGetMetaPOJO } from '@/interfaces';
+import { Service } from 'typedi';
 
 @Service()
 export class GetAuthMeta {
@@ -11,6 +11,7 @@ export class GetAuthMeta {
   public async getAuthMeta(): Promise<IAuthGetMetaPOJO> {
     return {
       signupDisabled: config.signupRestrictions.disabled,
+      oidcLoginDisabled: config.oidcLogin.disabled,
     };
   }
 }

@@ -1,7 +1,7 @@
 // @ts-nocheck
-import React, { createContext } from 'react';
 import { useAuthMetadata } from '@/hooks/query';
 import { Spinner } from '@blueprintjs/core';
+import React, { createContext } from 'react';
 import styled from 'styled-components';
 
 const AuthMetaBootContext = createContext();
@@ -15,6 +15,7 @@ function AuthMetaBootProvider({ ...props }) {
   const state = {
     isAuthMetaLoading,
     signupDisabled: authMeta?.meta?.signup_disabled,
+    oidcLoginDisabled: authMeta?.meta?.oidc_login_disabled,
   };
 
   if (isAuthMetaLoading) {
