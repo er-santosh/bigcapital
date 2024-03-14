@@ -40,6 +40,7 @@ import Settings from '@/api/controllers/Settings';
 import Users from '@/api/controllers/Users';
 import Views from '@/api/controllers/Views';
 import { BranchIntegrationErrorsMiddleware } from '@/services/Branches/BranchIntegrationErrorsMiddleware';
+import { BankingController } from './controllers/Banking/BankingController';
 import { BranchesController } from './controllers/Branches';
 import CashflowController from './controllers/Cashflow/CashflowController';
 import DashboardController from './controllers/Dashboard';
@@ -55,6 +56,7 @@ import TransactionsLocking from './controllers/TransactionsLocking';
 import { WarehousesController } from './controllers/Warehouses';
 import { WarehousesTransfers } from './controllers/Warehouses/WarehouseTransfers';
 import { WarehousesItemController } from './controllers/Warehouses/WarehousesItem';
+import { Webhooks } from './controllers/Webhooks/Webhooks';
 import asyncRenderMiddleware from './middleware/AsyncRenderMiddleware';
 import AuthorizationMiddleware from './middleware/AuthorizationMiddleware';
 
@@ -73,6 +75,7 @@ export default () => {
   app.use('/ping', Container.get(Ping).router());
   app.use('/jobs', Container.get(Jobs).router());
   app.use('/account', Container.get(Account).router());
+  app.use('/webhooks', Container.get(Webhooks).router());
 
   // - Dashboard routes.
   // ---------------------------
@@ -120,6 +123,7 @@ export default () => {
     Container.get(InventoryItemsCostController).router()
   );
   dashboard.use('/cashflow', Container.get(CashflowController).router());
+  dashboard.use('/banking', Container.get(BankingController).router());
   dashboard.use('/roles', Container.get(RolesController).router());
   dashboard.use(
     '/transactions-locking',
