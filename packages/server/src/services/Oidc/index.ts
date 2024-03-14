@@ -4,6 +4,7 @@ import {
 } from '@/config/oidcConfig';
 import { ISystemUser, ITenant } from '@/interfaces';
 import { oidcClient } from '@/lib/Oidc/OidcClient';
+import { generateToken } from '@/services/Authentication/_utils';
 import TenantsManagerService from '@/services/Tenancy/TenantsManager';
 import { Tenant } from '@/system/models';
 import { cloneDeep } from 'lodash';
@@ -79,31 +80,24 @@ export class OidcService {
 
     const { systemUserRepository } = this.sysRepositories;
 
-    const systemUser = await systemUserRepository.findOneByEmail(
-      userInfo.email
-    );
+    let systemUser = await systemUserRepository.findOneByEmail(userInfo.email);
 
+    // if oidc user is not found in system create new user else login user
     if (!systemUser) {
-      const tenant = await this.tenantsManager.createTenant();
+      const newTenant = await this.tenantsManager.createTenant();
 
-      const signupDTO = {
+      const signupPayload = {
         firstName: userInfo.given_name,
         lastName: userInfo.family_name,
         email: userInfo.email,
-      };
-
-      const registeredUser = await systemUserRepository.create({
-        ...signupDTO,
         active: true,
-        tenantId: tenant.id,
+        tenantId: newTenant.id,
         inviteAcceptedAt: moment().format('YYYY-MM-DD'),
-      });
-
-      return {
-        token: accessToken,
-        user: registeredUser,
-        tenant,
       };
+
+      systemUser = await systemUserRepository.create({
+        ...signupPayload,
+      });
     }
 
     // Update the last login at of the user.
@@ -114,26 +108,33 @@ export class OidcService {
       .withGraphFetched('metadata');
 
     // Keep the user object immutable.
-    const outputUser = cloneDeep(systemUser);
+    const user = cloneDeep(systemUser);
 
     // Remove password property from user object.
-    Reflect.deleteProperty(outputUser, 'password');
+    Reflect.deleteProperty(user, 'password');
+
+    const token = generateToken({
+      ...systemUser,
+      open_id_token: tokenSet.id_token,
+    });
 
     return {
-      token: accessToken,
-      user: outputUser,
+      token,
+      user,
       tenant,
     };
   }
 
   /**
    * Logout oidc user
-   * @param {string} accessToken
+   * @param {string} idToken
    * @return {string}
    */
-  public generateEndSessionUrl(accessToken: string): string {
+  public generateEndSessionUrl(idToken: string): string | null {
+    if (!idToken) return null;
+
     const loggedOutUrl = oidcClient.endSessionUrl({
-      id_token_hint: accessToken,
+      id_token_hint: idToken,
     });
 
     return loggedOutUrl;

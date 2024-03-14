@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { useAuthActions } from '@/hooks/state';
 import { useMutation } from 'react-query';
 import { setCookie } from '../../utils';
 import { useRequestQuery } from '../useQueryRequest';
@@ -78,10 +79,18 @@ export const useAuthOidcLogin = (props) => {
 
 export const useAuthOidcLogout = (props) => {
   const apiRequest = useApiRequest();
+  const { setLogout } = useAuthActions();
 
   return useMutation((values) => apiRequest.post('oidc/logout', values), {
     select: (res) => res.data,
-    onSuccess: (data) => {},
+    onSuccess: (data) => {
+      const logoutUrl = data.data.logout_url;
+
+      setLogout(logoutUrl);
+    },
+    onError: (err) => {
+      setLogout();
+    },
     ...props,
   });
 };

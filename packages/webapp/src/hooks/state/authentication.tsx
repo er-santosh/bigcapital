@@ -1,10 +1,10 @@
 // @ts-nocheck
-import { useDispatch, useSelector } from 'react-redux';
-import { useCallback } from 'react';
-import { isAuthenticated } from '@/store/authentication/authentication.reducer';
 import { setLogin } from '@/store/authentication/authentication.actions';
-import { useQueryClient } from 'react-query';
+import { isAuthenticated } from '@/store/authentication/authentication.reducer';
 import { removeCookie } from '@/utils';
+import { useCallback } from 'react';
+import { useQueryClient } from 'react-query';
+import { useDispatch, useSelector } from 'react-redux';
 
 /**
  * Removes the authentication cookies.
@@ -23,17 +23,24 @@ export const useAuthActions = () => {
 
   return {
     setLogin: useCallback((login) => dispatch(setLogin(login)), [dispatch]),
-    setLogout: useCallback(() => {
-      // Resets store state.
-      // dispatch(setStoreReset());
+    setLogout: useCallback(
+      (href?: string) => {
+        // Resets store state.
+        // dispatch(setStoreReset());
 
-      // Remove all cached queries.
-      queryClient.removeQueries();
+        // Remove all cached queries.
+        queryClient.removeQueries();
 
-      removeAuthenticationCookies();
+        removeAuthenticationCookies();
 
-      window.location.reload();
-    }, [queryClient]),
+        if (href) {
+          window.location.href = href;
+        } else {
+          window.location.reload();
+        }
+      },
+      [queryClient],
+    ),
   };
 };
 

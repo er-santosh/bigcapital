@@ -1,22 +1,19 @@
 // @ts-nocheck
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { FormattedMessage as T } from '@/components';
 import {
-  Menu,
-  MenuItem,
-  MenuDivider,
   Button,
+  Menu,
+  MenuDivider,
+  MenuItem,
   Popover,
   Position,
 } from '@blueprintjs/core';
-import { FormattedMessage as T } from '@/components';
-
-import { useAuthActions } from '@/hooks/state';
+import { useHistory } from 'react-router-dom';
 
 import withDialogActions from '@/containers/Dialog/withDialogActions';
 
-import { useAuthenticatedAccount } from '@/hooks/query';
-import { firstLettersArgs, compose } from '@/utils';
+import { useAuthOidcLogout, useAuthenticatedAccount } from '@/hooks/query';
+import { compose, firstLettersArgs } from '@/utils';
 
 /**
  * Dashboard topbar user.
@@ -26,13 +23,13 @@ function DashboardTopbarUser({
   openDialog,
 }) {
   const history = useHistory();
-  const { setLogout } = useAuthActions();
+  const { mutateAsync: oidcLogoutMutate } = useAuthOidcLogout();
 
   // Retrieve authenticated user information.
   const { data: user } = useAuthenticatedAccount();
 
   const onClickLogout = () => {
-    setLogout();
+    oidcLogoutMutate();
   };
 
   const onKeyboardShortcut = () => {
@@ -79,6 +76,4 @@ function DashboardTopbarUser({
     </Popover>
   );
 }
-export default compose(
-  withDialogActions,
-)(DashboardTopbarUser);
+export default compose(withDialogActions)(DashboardTopbarUser);

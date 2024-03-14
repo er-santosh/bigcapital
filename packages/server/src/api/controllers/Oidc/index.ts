@@ -24,7 +24,6 @@ export default class OidcController extends BaseController {
     router.use(AttachCurrentTenantUser);
     router.use(TenancyMiddleware);
 
-    router.post('/userinfo', this.oidcUserInfo);
     router.post('/logout', this.oidcLogout);
 
     return router;
@@ -73,28 +72,6 @@ export default class OidcController extends BaseController {
   };
 
   /**
-   * Authentication oidc userinfo.
-   * @param {Request} req -
-   * @param {Response} res -
-   * @param {NextFunction} next -
-   */
-  private oidcUserInfo = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
-      const { token } = req;
-
-      const userInfo = await this.oidcService.getUserInfoByAccessToken(token);
-
-      return res.status(200).send(userInfo);
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  /**
    * Authentication oidc logout.
    * @param {Request} req -
    * @param {Response} res -
@@ -104,7 +81,9 @@ export default class OidcController extends BaseController {
     try {
       const { token } = req;
 
-      const logoutUrl = this.oidcService.generateEndSessionUrl(token);
+      const idToken = token.open_id_token;
+
+      const logoutUrl = this.oidcService.generateEndSessionUrl(idToken);
 
       return res.status(200).send({ logoutUrl });
     } catch (error) {

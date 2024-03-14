@@ -19,6 +19,8 @@ import {
   AuthFooterLinks,
   AuthInsiderCard,
   AuthOidcSignInButton,
+  AuthOrDivider,
+  AuthOrDividerContainer,
   AuthenticationLoadingOverlay,
 } from './_components';
 import { LoginSchema, transformLoginErrorsToToasts } from './utils';
@@ -96,6 +98,9 @@ export default function Login() {
           onSubmit={handleSubmit}
           component={LoginForm}
         />
+        <AuthOrDividerContainer>
+          <AuthOrDivider>OR</AuthOrDivider>
+        </AuthOrDividerContainer>
         <AuthOidcSignInButton
           onClick={handleOidcAuthorize}
           type={'button'}

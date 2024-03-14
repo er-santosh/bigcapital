@@ -1,9 +1,8 @@
 // @ts-nocheck
-import React from 'react';
-import { Icon, For, FormattedMessage as T } from '@/components';
+import { For, Icon, FormattedMessage as T } from '@/components';
 
 import { getFooterLinks } from '@/constants/footerLinks';
-import { useAuthActions } from '@/hooks/state';
+import { useAuthOidcLogout } from '@/hooks/query';
 
 /**
  * Footer item link.
@@ -11,7 +10,7 @@ import { useAuthActions } from '@/hooks/state';
 function FooterLinkItem({ title, link }) {
   return (
     <div class="content__links-item">
-      <a href={link} target="_blank">
+      <a href={link} target="_blank" rel="noreferrer">
         {title}
       </a>
     </div>
@@ -38,11 +37,11 @@ function SetupLeftSectionFooter() {
  * Setup left section header.
  */
 function SetupLeftSectionHeader() {
-  const { setLogout } = useAuthActions();
+  const { mutateAsync: oidcLogoutMutate } = useAuthOidcLogout();
 
   // Handle logout link click.
   const onClickLogout = () => {
-    setLogout();
+    oidcLogoutMutate();
   };
 
   return (
