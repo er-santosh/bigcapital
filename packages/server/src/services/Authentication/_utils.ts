@@ -3,7 +3,9 @@ import { ISystemUser } from '@/interfaces';
 import JWT from 'jsonwebtoken';
 
 interface IExtendedSystemUser extends ISystemUser {
-  open_id_token: string;
+  oidc_access_token?: string;
+  oidc_id_token?: string;
+  oidc_refresh_token?: string;
 }
 
 /**
@@ -20,7 +22,9 @@ export const generateToken = (user: IExtendedSystemUser): string => {
     {
       id: user.id, // We are gonna use this in the middleware 'isAuth'
       exp: exp.getTime() / 1000,
-      open_id_token: user.open_id_token,
+      oidc_access_token: user.oidc_access_token,
+      oidc_id_token: user.oidc_id_token,
+      oidc_refresh_token: user.oidc_refresh_token,
     },
     config.jwtSecret
   );

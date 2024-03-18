@@ -31,10 +31,7 @@ const attachCurrentUser = async (
     }
     // Delete password property from user object.
     Reflect.deleteProperty(user, 'password');
-    req.user = {
-      ...user,
-      oidc_token_id: req.token.open_id_token,
-    };
+    req.user = user;
     return next();
   } catch (e) {
     Logger.error('[attach_user_middleware] error attaching user to req: %o', e);

@@ -117,7 +117,9 @@ export class OidcService {
 
     const token = generateToken({
       ...systemUser,
-      open_id_token: tokenSet.id_token,
+      oidc_access_token: tokenSet.access_token,
+      oidc_id_token: tokenSet.id_token,
+      oidc_refresh_token: tokenSet.refresh_token,
     });
 
     return {
@@ -132,12 +134,17 @@ export class OidcService {
    * @param {string} idToken
    * @return {string}
    */
-  public generateEndSessionUrl(idToken: string): string | null {
-    if (!idToken) return null;
+  public async generateEndSessionUrl({
+    oidcIdToken,
+    oidcAccessToken,
+  }): Promise<string> | null {
+    if (!oidcIdToken || !oidcAccessToken) return null;
 
     const loggedOutUrl = oidcClient.endSessionUrl({
-      id_token_hint: idToken,
+      id_token_hint: oidcIdToken,
     });
+
+    await oidcClient.revoke(oidcAccessToken, 'access_token');
 
     return loggedOutUrl;
   }

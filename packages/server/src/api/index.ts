@@ -39,6 +39,7 @@ import Sales from '@/api/controllers/Sales';
 import Settings from '@/api/controllers/Settings';
 import Users from '@/api/controllers/Users';
 import Views from '@/api/controllers/Views';
+import oidcSessionMiddleware from '@/api/middleware/oidcSession';
 import { BranchIntegrationErrorsMiddleware } from '@/services/Branches/BranchIntegrationErrorsMiddleware';
 import { BankingController } from './controllers/Banking/BankingController';
 import { BranchesController } from './controllers/Branches';
@@ -83,6 +84,7 @@ export default () => {
 
   dashboard.use(JWTAuth);
   dashboard.use(AttachCurrentTenantUser);
+  dashboard.use(oidcSessionMiddleware);
   dashboard.use(TenancyMiddleware);
   dashboard.use(EnsureTenantIsInitialized);
   dashboard.use(SettingsMiddleware);
